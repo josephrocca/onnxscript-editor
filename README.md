@@ -1,6 +1,6 @@
 Demo: https://josephrocca.github.io/onnxscript-editor/demo
 
-A prototype to code up an ONNX model with [ONNX Script](https://github.com/microsoft/onnx-script) while visualising your edits live with [Netron](https://github.com/lutzroeder/netron). It runs completely in the browser - no server involved. This is thanks to [Pyodide](https://github.com/pyodide/pyodide/) - a Python runtime compiled to wasm.
+A prototype to code up an ONNX model with [ONNX Script](https://github.com/microsoft/onnx-script) while visualising your edits live with [Netron](https://github.com/lutzroeder/netron). It runs **completely in the browser** - no server involved. This is thanks to [Pyodide](https://github.com/pyodide/pyodide/) - a Python runtime compiled to wasm.
 
 The `onnxscript` package is pure Python so it was easy to get working (just clone repo, install `pyodide-build` with `pip`, and then run `pyodide build`). Building `onnx` was a bit harder since it has C++ code. The build process for `onnx` is [detailed here](https://github.com/josephrocca/onnx-pyodide).
 
