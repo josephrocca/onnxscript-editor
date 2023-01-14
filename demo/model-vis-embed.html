@@ -23,5 +23,14 @@
     </div>
     <iframe id="netronIframe" style="width:100%; height:734px; border:none;" src="./netron-6.4.0/source/index.html"></iframe>
   </div>
+
+  <script type="module">
+    window.___iframeExports = undefined;
+    while(1) {
+      window.___iframeExports = netronIframe.contentWindow.___iframeExports;
+      if(window.___iframeExports) break;
+      else await new Promise(r => setTimeout(r, 100));
+    }
+  </script>
 </body>
 </html>
