@@ -43,6 +43,11 @@ onnx.save(model.to_model_proto(), "/model.onnx")
   </script>
 
   <script>
+    let isInDarkMode = false;
+    if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      isInDarkMode = true;
+    }
+
     window.editor = monaco.editor.create(document.getElementById('codeContainer'), {
       value: examplePythonCode.textContent,
       language: 'python',
@@ -50,6 +55,7 @@ onnx.save(model.to_model_proto(), "/model.onnx")
         enabled: false
       },
       automaticLayout: true,
+      theme: isInDarkMode ? "vs-dark" : "vs",
     });
 
     document.addEventListener('keydown', e => {
