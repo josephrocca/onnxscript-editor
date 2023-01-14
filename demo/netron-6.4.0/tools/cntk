@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+pushd $(cd $(dirname ${0})/..; pwd) > /dev/null
+
+clean() {
+    echo "cntk clean"
+    rm -rf "./third_party/source/cntk"
+}
+
+sync() {
+    echo "cntk sync"
+    mkdir -p "./third_party/source/cntk/Source/CNTKv2LibraryDll/proto"
+    curl --silent --location --output "./third_party/source/cntk/Source/CNTKv2LibraryDll/proto/CNTK.proto" "https://github.com/microsoft/CNTK/blob/master/Source/CNTKv2LibraryDll/proto/CNTK.proto?raw=true"
+}
+
+schema() {
+    echo "cntk schema"
+    [[ $(grep -U $'\x0D' ./source/cntk-proto.js) ]] && crlf=1
+    node ./tools/protoc.js --root cntk --out ./source/cntk-proto.js ./third_party/source/cntk/Source/CNTKv2LibraryDll/proto/CNTK.proto
+    if [[ -n ${crlf} ]]; then
+        unix2dos --quiet --newfile ./source/cntk-proto.js ./source/cntk-proto.js
+    fi
+}
+
+while [ "$#" != 0 ]; do
+    command="$1" && shift
+    case "${command}" in
+        "clean") clean;;
+        "sync") sync;;
+        "schema") schema;;
+    esac
+done

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title></title>
+</head>
+<body>
+  <style>
+    body * {
+      box-sizing: border-box;
+    }
+  </style>
+
+  <div id="codeContainer" style="position:fixed; top:0; left:0; bottom:0; right:0;"></div>
+  
+  <!-- monaco-editor v0.34.1 -->
+  <script>window.require = { paths: { vs: '../node_modules/monaco-editor/min/vs' } };</script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="/node_modules/monaco-editor/min/vs/editor/editor.main.css"/>
+  <script src="/node_modules/monaco-editor/min/vs/loader.js"></script>
+  <script src="/node_modules/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
+  <script src="/node_modules/monaco-editor/min/vs/editor/editor.main.js"></script>
+
+  <script id="examplePythonCode" type="text/python">import onnx
+from onnx import TensorProto
+from onnx.helper import make_tensor
+from onnxscript import script, export_onnx_lib, INT64, FLOAT
+from onnxscript import opset15 as op
+
+@script(op)
+def model(X: FLOAT[...], axis: int = 0) -> FLOAT[...]:
+  argmax = op.ArgMax(X, axis=axis, keepdims=False)
+  xshape = op.Shape(X, start=axis)
+  zero = op.Constant(value_ints=[0])
+  depth = op.GatherElements(xshape, zero)
+  empty_shape = op.Constant(value_ints=[])
+  depth = op.Reshape(depth, empty_shape)
+  values = op.Constant(value=make_tensor('cst01', TensorProto.FLOAT, [2], [0, 1]))
+  cast_values = op.CastLike(values, X)
+  return op.OneHot(argmax, depth, cast_values, axis=axis)
+
+onnx.save(model.to_model_proto(), "/model.onnx")
+  </script>
+
+  <script>
+    window.editor = monaco.editor.create(document.getElementById('codeContainer'), {
+      value: examplePythonCode.textContent,
+      language: 'python',
+      minimap: {
+        enabled: false
+      },
+      automaticLayout: true,
+    });
+
+    document.addEventListener('keydown', e => {
+      if(e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        window.parent.codeToModelBtn.click();
+      }
+    });
+
+    let keypressCompileTimeout;
+    editor.onDidChangeModelContent(e => {
+      clearTimeout(keypressCompileTimeout);
+      keypressCompileTimeout = setTimeout(() => {
+        if(window.parent.autoCompileCheckbox.checked) window.parent.codeToModelBtn.click();
+      }, 500);
+    });
+  </script>
+</body>
+</html>

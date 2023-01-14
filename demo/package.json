@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "monaco-editor": "^0.34.1",
+    "split.js": "^1.6.5"
+  }
+}

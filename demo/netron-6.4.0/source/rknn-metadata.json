@@ -1,0 +1,313 @@
+[
+  {
+    "name": "VSI_NN_OP_ADD",
+    "inputs": [
+      { "name": "input" },
+      { "name": "other" }
+    ]
+  },
+  {
+    "name": "VSI_NN_OP_CONCAT",
+    "category": "Tensor",
+    "inputs": [
+      { "name": "inputs", "list": true }
+    ]
+  },
+  {
+    "name": "VSI_NN_OP_CONV_RELU",
+    "category": "Layer",
+    "inputs": [
+      { "name": "input" },
+      { "name": "weights" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "VSI_NN_OP_CONV_RELU_POOL",
+    "category": "Layer",
+    "inputs": [
+      { "name": "input" },
+      { "name": "weights" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "VSI_NN_OP_CONV2D",
+    "category": "Layer",
+    "inputs": [
+      { "name": "input" },
+      { "name": "weights" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "VSI_NN_OP_DECONVOLUTION",
+    "category": "Layer",
+    "inputs": [
+      { "name": "input" },
+      { "name": "weights" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "VSI_NN_OP_FCL",
+    "category": "Layer",
+    "inputs": [
+      { "name": "input" },
+      { "name": "weights" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "VSI_NN_OP_FCL_RELU",
+    "category": "Layer",
+    "inputs": [
+      { "name": "input" },
+      { "name": "weights" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "VSI_NN_OP_LEAKY_RELU",
+    "category": "Activation"
+  },
+  {
+    "name": "VSI_NN_OP_LEAKY_SIGMOID",
+    "category": "Activation"
+  },
+  {
+    "name": "VSI_NN_OP_MISH",
+    "category": "Activation"
+  },
+  {
+    "name": "VSI_NN_OP_PERMUTE",
+    "category": "Shape"
+  },
+  {
+    "name": "VSI_NN_OP_POOL",
+    "category": "Pool"
+  },
+  {
+    "name": "VSI_NN_OP_RELU",
+    "category": "Activation"
+  },
+  {
+    "name": "VSI_NN_OP_PRELU",
+    "category": "Activation",
+    "inputs": [
+      { "name": "input" },
+      { "name": "slope" }
+    ]
+  },
+  {
+    "name": "VSI_NN_OP_RESHAPE",
+    "category": "Shape"
+  },
+  {
+    "name": "VSI_NN_OP_SIGMOID",
+    "category": "Activation"
+  },
+  {
+    "name": "VSI_NN_OP_SOFTMAX",
+    "category": "Activation"
+  },
+  {
+    "name": "VSI_NN_OP_RESIZE",
+    "category": "Shape"
+  },
+  {
+    "name": "VSI_NN_OP_LRN",
+    "category": "Normalization"
+  },
+  {
+    "name": "VSI_NN_OP_BATCH_NORM",
+    "category": "Normalization",
+    "inputs": [
+      { "name": "input" },
+      { "name": "gamma" },
+      { "name": "beta" },
+      { "name": "mean" },
+      { "name": "variance" }
+    ]
+  },
+  {
+    "name": "VSI_NN_OP_LSTM",
+    "category": "Layer"
+  },
+  {
+    "name": "VSI_NN_OP_STRIDED_SLICE",
+    "category": "Tensor"
+  },
+  {
+    "name": "VSI_NN_OP_SWISH",
+    "category": "Activation"
+  },
+  {
+    "name": "VSI_NN_OP_RELUN",
+    "category": "Activation"
+  },
+  {
+    "name": "VSI_NN_OP_INSTANCE_NORM",
+    "category": "Normalization",
+    "inputs": [
+      { "name": "input" },
+      { "name": "scale" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "Conv",
+    "category": "Layer",
+    "inputs": [
+      { "name": "input" },
+      { "name": "weights" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "ConvTranspose",
+    "category": "Layer",
+    "inputs": [
+      { "name": "input" },
+      { "name": "weights" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "ConvRelu",
+    "category": "Layer",
+    "inputs": [
+      { "name": "input" },
+      { "name": "weights" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "ConvClip",
+    "category": "Layer",
+    "inputs": [
+      { "name": "input" },
+      { "name": "weights" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "Concat",
+    "category": "Tensor",
+    "inputs": [
+      { "name": "inputs", "list": true }
+    ]
+  },
+  {
+    "name": "BatchNormalization",
+    "category": "Normalization",
+    "inputs": [
+      { "name": "input" },
+      { "name": "weight" },
+      { "name": "bias" },
+      { "name": "running_mean" },
+      { "name": "running_var" }
+    ]
+  },
+  {
+    "name": "Relu",
+    "category": "Activation"
+  },
+  {
+    "name": "Softmax",
+    "category": "Activation"
+  },
+  {
+    "name": "MaxPool",
+    "category": "Pool"
+  },
+  {
+    "name": "AveragePool",
+    "category": "Pool"
+  },
+  {
+    "name": "Reshape",
+    "category": "Shape",
+    "inputs": [
+      { "name": "input" },
+      { "name": "shape" }
+    ]
+  },
+  {
+    "name": "Transpose",
+    "category": "Transform"
+  },
+  {
+    "name": "Add",
+    "inputs": [
+      { "name": "A" },
+      { "name": "B" }
+    ],
+    "outputs": [
+      { "name": "C" }
+    ]
+  },
+  {
+    "name": "Split",
+    "category": "Tensor",
+    "outputs": [
+      { "name": "output", "list": true }
+    ]
+  },
+  {
+    "name": "PoolingLayer2",
+    "category": "Pool"
+  },
+  {
+    "name": "Softmax2Layer",
+    "category": "Activation"
+  },
+  {
+    "name": "SoftMax2",
+    "category": "Activation"
+  },
+  {
+    "name": "TensorTranspose",
+    "category": "Transform"
+  },
+  {
+    "name": "ActivationLayer",
+    "category": "Activation"
+  },
+  {
+    "name": "LeakyReluLayer",
+    "category": "Activation"
+  },
+  {
+    "name": "ConvolutionLayer",
+    "category": "Layer"
+  },
+  {
+    "name": "TensorScale",
+    "category": "Layer"
+  },
+  {
+    "name": "BatchNormalizationLayer",
+    "category": "Normalization"
+  },
+  {
+    "name": "Sigmoid",
+    "category": "Activation"
+  },
+  {
+    "name": "LeakyRelu",
+    "category": "Activation"
+  },
+  {
+    "name": "HardSigmoid",
+    "category": "Activation"
+  },
+  {
+    "name": "exSwish",
+    "category": "Activation"
+  },
+  {
+    "name": "Slice",
+    "category": "Tensor"
+  }
+]

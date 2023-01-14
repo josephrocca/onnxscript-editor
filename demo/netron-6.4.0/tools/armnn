@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+pushd $(cd $(dirname ${0})/..; pwd) > /dev/null
+
+clean() {
+    echo "armnn clean"
+    rm -rf ./third_party/source/armnn
+}
+
+sync() {
+    echo "armnn sync"
+    mkdir -p "./third_party/source/armnn/src/armnnSerializer"
+    curl --silent --location --output "./third_party/source/armnn/src/armnnSerializer/ArmnnSchema.fbs" "https://github.com/ARM-software/armnn/raw/branches/armnn_20_08/src/armnnSerializer/ArmnnSchema.fbs?raw=true"
+}
+
+schema() {
+    echo "armnn schema"
+    [[ $(grep -U $'\x0D' ./source/armnn-schema.js) ]] && crlf=1
+    node ./tools/flatc.js --text --root armnn --out ./source/armnn-schema.js ./third_party/source/armnn/src/armnnSerializer/ArmnnSchema.fbs
+    if [[ -n ${crlf} ]]; then
+        unix2dos --quiet --newfile ./source/armnn-schema.js ./source/armnn-schema.js
+    fi
+}
+
+while [ "$#" != 0 ]; do
+    command="$1" && shift
+    case "${command}" in
+        "clean") clean;;
+        "sync") sync;;
+        "schema") schema;;
+    esac
+done

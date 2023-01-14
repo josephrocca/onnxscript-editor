@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+pushd $(cd $(dirname ${0})/..; pwd) > /dev/null
+
+schema() {
+    echo "uff schema"
+    [[ $(grep -U $'\x0D' ./source/uff-proto.js) ]] && crlf=1
+    node ./tools/protoc.js --text --root uff --out ./source/uff-proto.js ./tools/uff.proto
+    if [[ -n ${crlf} ]]; then
+        unix2dos --quiet --newfile ./source/uff-proto.js ./source/uff-proto.js
+    fi
+}
+
+while [ "$#" != 0 ]; do
+    command="$1" && shift
+    case "${command}" in
+        "schema") schema;;
+    esac
+done

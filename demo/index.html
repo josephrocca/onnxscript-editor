@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>ONNX Script Model Maker</title>
+</head>
+<body>
+  <style>
+    html, body, .grid {
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    body {
+      font-family: sans-serif;
+    }
+
+    body * {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 10px 1fr;
+      position: fixed;
+      top: 30px;
+      left: 0;
+      width: 100vw;
+      height: calc(100vh-30px);
+    }
+
+    .vertical-gutter {
+      grid-area: 1 / 2;
+      border: solid 1px #bababa;
+      background: rgb(255 255 255);
+      cursor: col-resize;
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==);
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  </style>
+
+  <div style="position:fixed;height:30px;top:0;right:0;left:0;padding: 3px;box-sizing: border-box; font-size:14px;">
+    <div style="height: 100%;display: flex; justify-content:space-between;">
+      <div style="width:max-content;height: 100%;display: flex;">
+        <button id="codeToModelBtn" onclick="this.disabled=true; this.innerHTML='loading ⏳'; window.codeToModel().then(r => {this.disabled=false; this.innerHTML='compile ➡️'})" style="height:100%;cursor:pointer;box-sizing: border-box;display: block;">compile ➡️</button>
+        <div style="display: block;background-color:#d5d5d5;padding: 2px;height: 100%;box-sizing: border-box;border-radius: 2px;font-family: sans-serif;margin-left:2px;">
+          <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;"><input checked id="autoCompileCheckbox" type="checkbox"> <span>auto</span></div>
+        </div>
+      </div>
+      <button id="downloadBtn" onclick="window.downloadModel()" style="height:100%; cursor:pointer;">download ⬇️</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <iframe id="codeEditorIframe" style="width:100%; height:100%; border:none;" src="/code-editor-embed.html"></iframe>
+    </div>
+    <div>
+      <iframe id="modelVisIframe" style="width:100%; height:100%; border:none;" src="/model-vis-embed.html"></iframe>
+    </div>
+    <div class="vertical-gutter"></div>
+  </div>
+  
+  <script src="https://unpkg.com/split-grid@1.0.11/dist/split-grid.js"></script>
+  <script>
+    Split({
+      columnGutters: [{
+        track: 1,
+        element: document.querySelector('.vertical-gutter'),
+      }]
+    });
+  </script>
+  
+  <script type="module">
+    let editor;
+    async function getEditorText() {
+      if(!editor) {
+        while(1) {
+          editor = codeEditorIframe.contentWindow?.editor;
+          if(editor) break;
+          else await new Promise(r => setTimeout(r, 100));
+        }
+      }
+      return editor.getValue();
+    }
+    let netronExports;
+    async function getNetronExports() {
+      if(!netronExports) {
+        while(1) {
+          netronExports = modelVisIframe.contentWindow?.netronIframe.contentWindow.___iframeExports;
+          if(netronExports) break;
+          else await new Promise(r => setTimeout(r, 100));
+        }
+      }
+      return netronExports;
+    }
+
+    window.codeToModelResolvers = {};
+    window.modelToCodeResolvers = {};
+    let worker = new Worker("pyodideWorker.js");
+    worker.onmessage = async function(e) {
+      if(e.data.error) {
+        modelVisIframe.contentWindow.introFacadeEl.innerHTML = `<pre>${e.data.error}\n\n\n\n</pre>`
+        modelVisIframe.contentWindow.introFacadeEl.style.display = "";
+        window.codeToModelResolvers[e.data.id]();
+      } else {
+        console.log("Result:", e.data.modelBuffer);
+        downloadBtn.disabled = false;
+        window.currentModelBuffer = e.data.modelBuffer;
+        let netronExports = await getNetronExports();
+        let blob = new Blob([new Uint8Array(e.data.modelBuffer)]);
+        let file = new File([blob], "model.onnx");
+        netronExports.open(file, [file]);
+        modelVisIframe.contentWindow.introFacadeEl.style.display = "none";
+        window.codeToModelResolvers[e.data.id]();
+      }
+    };
+
+    window.codeToModel = function () {
+      downloadBtn.disabled = true;
+      return new Promise(async r => {
+        let id = Math.random();
+        window.codeToModelResolvers[id] = r;
+
+        let text = await getEditorText();
+        worker.postMessage({id, command:"codeToModel", pythonCode:text});
+      });
+    };
+
+    window.modelToCode = function (modelBuffer) {
+      downloadBtn.disabled = true;
+      return new Promise(async r => {
+        let id = Math.random();
+        window.modelToCodeResolvers[id] = r;
+
+        let text = await getEditorText();
+        worker.postMessage({id, command:"modelToCode", modelBuffer}, [modelBuffer]);
+      });
+    };
+
+    var downloadBlob = (blob,filename) => {let a=document.createElement("a"),u=URL.createObjectURL(blob);a.download=filename,a.href=u,a.click(),setTimeout(()=>URL.revokeObjectURL(u))};
+    window.downloadModel = function() {
+      downloadBlob(new Blob([window.currentModelBuffer]), "model.onnx");
+    };
+
+    document.addEventListener('keydown', e => {
+      if(e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        codeToModelBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+#!/bin/bash
+
+set -e
+pushd $(cd $(dirname ${0})/..; pwd) > /dev/null
+
+case "${OSTYPE}" in
+    msys*) python="winpty python";;
+    *) python="python";;
+esac
+
+venv() {
+    env_dir=./third_party/env/scikit-learn
+    [ -d "${env_dir}" ] || ${python} -m venv ${env_dir}
+    case "${OSTYPE}" in
+        msys*) source ${env_dir}/Scripts/activate;;
+        *) source ${env_dir}/bin/activate;;
+    esac
+    ${python} -m pip install --quiet --upgrade pip setuptools wheel
+}
+
+clean() {
+    echo "sklearn clean"
+    rm -rf "./third_party/env/scikit-learn"
+    rm -rf "./third_party/source/scikit-learn"
+}
+
+sync() {
+    echo "sklearn sync"
+    [ -d "./third_party/source/scikit-learn" ] || git clone --quiet --recursive "https://github.com/scikit-learn/scikit-learn.git" "./third_party/source/scikit-learn"
+    pushd "./third_party/source/scikit-learn" > /dev/null
+    git pull --quiet --prune
+    git submodule sync --quiet
+    git submodule update --quiet --init --recursive
+    popd > /dev/null
+}
+
+install() {
+    echo "sklearn install"
+    venv
+    ${python} -m pip install --quiet scipy
+    ${python} -m pip install --quiet --pre --extra-index https://pypi.anaconda.org/scipy-wheels-nightly/simple scikit-learn
+    deactivate
+}
+
+metadata() {
+    echo "sklearn metadata"
+    [[ $(grep -U $'\x0D' ./source/sklearn-metadata.json) ]] && crlf=1
+    venv
+    export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+    ${python} ./tools/sklearn_metadata.py
+    deactivate
+    if [[ -n ${crlf} ]]; then
+        unix2dos --quiet --newfile ./source/sklearn-metadata.json ./source/sklearn-metadata.json
+    fi
+}
+
+while [ "$#" != 0 ]; do
+    command="$1" && shift
+    case "${command}" in
+        "clean") clean;;
+        "sync") sync;;
+        "install") install;;
+        "metadata") metadata;;
+    esac
+done

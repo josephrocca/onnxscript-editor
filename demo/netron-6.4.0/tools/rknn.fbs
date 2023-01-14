@@ -1,0 +1,78 @@
+namespace rknn;
+
+file_identifier 'RKNN';
+root_type Model;
+
+table Model {
+    var1: int;
+    format: string;
+    graphs: [Graph];
+    generator: string;
+    var2: [Type1];
+    var3: int;
+    var4: int;
+    compiler: string;
+    runtime: string;
+    source: string;
+    var5: bool;
+    var6: int;
+    input_json: string;
+    output_json: string;
+}
+
+table Graph {
+    tensors: [Tensor];
+    nodes: [Node];
+    inputs: [int];
+    outputs: [int];
+    var1: [Type2];
+}
+
+table Node {
+    var1: int;
+    type: string;
+    name: string;
+    var2: byte;
+    inputs: [int];
+    outputs: [int];
+    var3: [Type3];
+    var4: byte;
+    var5: int;
+    var6: int;
+}
+
+table Tensor {
+    data_type: byte;
+    var02: byte;
+    kind: byte;
+    var04: [int];
+    shape: [int];
+    name: string;
+    var06: [byte];
+    var07: string;
+    var08: [byte];
+    var09: [byte];
+    var10: [byte];
+    var11: [byte];
+    size: int;
+    var13: int;
+    var14: int;
+    var15: int;
+    var16: int;
+    var17: int;
+    index: int;
+}
+
+table Type1 {
+    var1: int;
+}
+
+table Type2 {
+    var1: [int];
+    var2: [int];
+    var3: [int];
+}
+
+table Type3 {
+    var1: int;
+}

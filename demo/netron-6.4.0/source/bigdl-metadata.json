@@ -1,0 +1,95 @@
+[
+  {
+    "name": "com.intel.analytics.bigdl.nn.Dropout",
+    "category": "Dropout"
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.InferReshape",
+    "category": "Shape"
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.JoinTable",
+    "category": "Tensor",
+    "inputs": [
+      { "name": "inputs", "list": true }
+    ],
+    "outputs": [
+      { "name": "output" }
+    ]
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.Linear",
+    "category": "Layer",
+    "inputs": [
+      { "name": "inputs" },
+      { "name": "weight" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.NormalizeScale",
+    "category": "Normalization",
+    "inputs": [
+      { "name": "inputs" },
+      { "name": "w" }
+    ]
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.ReLU",
+    "category": "Activation"
+  },
+  {
+    "name": "Scale",
+    "category": "Layer",
+    "inputs": [
+      { "name": "inputs" },
+      { "name": "weight" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "SoftMax",
+    "category": "Activation"
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.SpatialAveragePooling",
+    "category": "Pool"
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.SpatialBatchNormalization",
+    "category": "Normalization"
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.quantized.SpatialConvolution",
+    "category": "Layer",
+    "inputs": [
+      { "name": "inputs" },
+      { "name": "weight" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.SpatialCrossMapLRN",
+    "category": "Normalization"
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.SpatialDilatedConvolution",
+    "category": "Layer",
+    "inputs": [
+      { "name": "inputs" },
+      { "name": "weight" },
+      { "name": "bias" }
+    ]
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.SpatialMaxPooling",
+    "category": "Pool"
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.Transpose",
+    "category": "Shape"
+  },
+  {
+    "name": "com.intel.analytics.bigdl.nn.View"
+  }
+]

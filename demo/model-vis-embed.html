@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title></title>
+</head>
+<body>
+  <style>
+    html, body {
+      padding: 0;
+      margin: 0;
+    }
+    body {
+      box-sizing: border-box;
+    }
+  </style>
+  <div style="position:absolute; top:0; left:0; bottom:0; right:0;">
+    <div id="introFacadeEl" style="z-index:10;background:white;pointer-events:none;position: absolute;width: 100%;height: 100%;padding: 1rem;font-family: monospace; box-sizing: border-box;">
+      <h2 style="margin-top: 0;">ONNX Script Live Visualizer</h2>
+      <p>Drag-and-drop a model here, or type some code in the code editor.</p>
+      <p>The model visualiser that will appear in place of this message is powered by <a href="https://netron.app" target="_blank" style="pointer-events: all;">netron.app</a>.</p>
+    </div>
+    <iframe id="netronIframe" style="width:100%; height:734px; border:none;" src="/netron-6.4.0/source/index.html"></iframe>
+  </div>
+</body>
+</html>

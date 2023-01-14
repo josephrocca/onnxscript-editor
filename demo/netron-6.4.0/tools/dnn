@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+pushd $(cd $(dirname ${0})/..; pwd) > /dev/null
+
+schema() {
+    echo "dnn schema"
+    [[ $(grep -U $'\x0D' ./source/dnn-proto.js) ]] && crlf=1
+    node ./tools/protoc.js --root dnn --out ./source/dnn-proto.js ./tools/dnn.proto
+    if [[ -n ${crlf} ]]; then
+        unix2dos --quiet --newfile ./source/dnn-proto.js ./source/dnn-proto.js
+    fi
+}
+
+while [ "$#" != 0 ]; do
+    command="$1" && shift
+    case "${command}" in
+        "schema") schema;;
+    esac
+done
