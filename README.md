@@ -17,3 +17,4 @@ A few things hackily changed to get this prototype working:
 * Replace [these lines](https://github.com/lutzroeder/netron/blob/v6.4.0/source/index.js#L79-L193) with `resolve()` to remove telemetry stuff.
 * Add this `if(!window.___iframeExports) window.___iframeExports = {}; window.___iframeExports.open = this._open.bind(this);` [here](https://github.com/lutzroeder/netron/blob/v6.4.0/source/index.js#L281).
 * Remove [this line](https://github.com/lutzroeder/netron/blob/v6.4.0/source/view.js#L289) and [this line](https://github.com/lutzroeder/netron/blob/v6.4.0/source/dialog.js#L65) - otherwise netron steals focus every time a model is visualised.
+* Remove [this line](https://github.com/lutzroeder/netron/blob/v6.4.0/source/index.js#L11).

@@ -8,7 +8,7 @@ host.BrowserHost = class {
         this._navigator = window.navigator;
         this._document = window.document;
         if (this._window.location.hostname.endsWith('.github.io')) {
-            this._window.location.replace('https://netron.app');
+            // this._window.location.replace('https://netron.app');
         }
         this._window.eval = () => {
             throw new Error('window.eval() not supported.');

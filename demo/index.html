@@ -93,7 +93,7 @@
     async function getNetronExports() {
       if(!netronExports) {
         while(1) {
-          netronExports = modelVisIframe.contentWindow?.___iframeExports;
+          netronExports = modelVisIframe.contentWindow?.netronIframe.contentWindow.___iframeExports;
           if(netronExports) break;
           else await new Promise(r => setTimeout(r, 100));
         }
