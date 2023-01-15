@@ -31,7 +31,8 @@ self.onmessage = async (event) => {
 
     console.log("result:", result);
 
-    let modelUint8Array = pyodide.FS.readFile("/model.onnx");
+    let modelUint8Array;
+    try { modelUint8Array = pyodide.FS.readFile("/model.onnx"); } catch(e) { modelUint8Array = new Uint8Array(1); }
 
     self.postMessage({ id, error:result, modelBuffer:modelUint8Array.buffer }, [modelUint8Array.buffer]);
 
